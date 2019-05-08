@@ -16,9 +16,14 @@ namespace StockToDatabase
 {
     public partial class Form1 : Form
     {
+
+        DbParser dbParser = new DbParser();
+        private FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
+        
         public Form1()
         {
             InitializeComponent();
+
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -30,16 +35,19 @@ namespace StockToDatabase
 
         private void button1_Click(object sender, EventArgs e)
         {
+
             string connetionString = null;
             SqlConnection connection;
             SqlCommand command;
+            SqlDataReader reader;
             string sql = null;
-
+            
             connetionString = "Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = C:\\Users\\gusta"+
                 "\\source\\repos\\StockToDatabase\\StockToDatabase\\StockRecordDb.mdf; Integrated Security = True";
             Console.WriteLine(connetionString);
-            sql = "SELECT * FROM StockTable;";
-
+            sql = "INSERT INTO StockTable(date, Name, Price, EarningPerShare, PricePerEarning, CapitalPerShare," + 
+                  " PricePerCapital, Dividend, Yield, ProfitMargin, ROI)"+ 
+                  " VALUES('1970-01-01', 'GodFather', 10.0, 7, 8, 9, 10, 11, 12, 13, 14);";
             connection = new SqlConnection(connetionString);
 
             Console.WriteLine("Try to connect to database...");
@@ -50,7 +58,17 @@ namespace StockToDatabase
                 command = new SqlCommand(sql, connection);
                 command.ExecuteNonQuery();
                 command.Dispose();
-                connection.Close();
+                
+                sql = "SELECT * FROM StockTable;";
+                command = new SqlCommand(sql, connection);
+                reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    MessageBox.Show(reader.GetValue(0) + " - " + reader.GetValue(1) + " - " + reader.GetValue(2));
+                }
+                reader.Close();
+                command.Dispose();
+                
                 MessageBox.Show(" ExecuteNonQuery in SqlCommand executed !!");
             }
             catch (Exception ex)
@@ -61,7 +79,33 @@ namespace StockToDatabase
             }
 
             Console.WriteLine("All done. Press any key to finish...");
-            //Console.ReadKey(true);
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("Clear database");
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void folderButton_Click(object sender, EventArgs e)
+        {
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            {
+                folderButton.Text = folderBrowserDialog1.SelectedPath;
+            }
+        }
+
+
     }
 }
