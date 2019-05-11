@@ -42,6 +42,7 @@ namespace StockToDatabase
             this.scanDatabaseButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.timeIntervalGroupBox.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // linkLabel1
@@ -149,9 +150,9 @@ namespace StockToDatabase
             // 
             // folderButton
             // 
-            this.folderButton.Location = new System.Drawing.Point(57, 268);
+            this.folderButton.Location = new System.Drawing.Point(6, 22);
             this.folderButton.Name = "folderButton";
-            this.folderButton.Size = new System.Drawing.Size(172, 27);
+            this.folderButton.Size = new System.Drawing.Size(240, 27);
             this.folderButton.TabIndex = 10;
             this.folderButton.Text = "Test";
             this.folderButton.UseVisualStyleBackColor = true;
@@ -169,6 +170,7 @@ namespace StockToDatabase
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.folderButton);
             this.groupBox1.Location = new System.Drawing.Point(159, 240);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(271, 55);
@@ -182,7 +184,6 @@ namespace StockToDatabase
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(654, 453);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.folderButton);
             this.Controls.Add(this.scanDatabaseButton);
             this.Controls.Add(this.timeIntervalGroupBox);
             this.Controls.Add(this.clearDatabaseButton);
@@ -195,6 +196,7 @@ namespace StockToDatabase
             this.Text = "Form1";
             this.timeIntervalGroupBox.ResumeLayout(false);
             this.timeIntervalGroupBox.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,12 +20,20 @@ namespace StockToDatabase
     {
 
         DbParser dbParser = new DbParser();
+        FileScanner fileScanner = new FileScanner();
         private FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
-        
+        private String inputPath = @"C:\Users\gusta\Dropbox\Ekonomi\results";
+                
         public Form1()
         {
             InitializeComponent();
-
+            Console.WriteLine(inputPath);
+            if (!Directory.Exists(inputPath))
+            {
+                inputPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+                Console.WriteLine(inputPath);
+            }
+            folderButton.Text = inputPath;
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -70,6 +80,7 @@ namespace StockToDatabase
                 command.Dispose();
                 
                 MessageBox.Show(" ExecuteNonQuery in SqlCommand executed !!");
+                connection.Close();
             }
             catch (Exception ex)
             {
@@ -83,7 +94,9 @@ namespace StockToDatabase
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Clear database");
+            Console.WriteLine("Check  database info");
+            dbParser.writeSummareyToConsole();
+            dbParser.clearDb();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -102,10 +115,9 @@ namespace StockToDatabase
         {
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
-                folderButton.Text = folderBrowserDialog1.SelectedPath;
+                inputPath = folderBrowserDialog1.SelectedPath;
+                folderButton.Text = inputPath;
             }
         }
-
-
     }
 }
