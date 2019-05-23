@@ -40,9 +40,9 @@ namespace StockToDatabase
             this.timeIntervalGroupBox = new System.Windows.Forms.GroupBox();
             this.folderButton = new System.Windows.Forms.Button();
             this.scanDatabaseButton = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.directoryGroupBox = new System.Windows.Forms.GroupBox();
             this.timeIntervalGroupBox.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.directoryGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // linkLabel1
@@ -92,9 +92,11 @@ namespace StockToDatabase
             // fromDateTimePicker
             // 
             this.fromDateTimePicker.Location = new System.Drawing.Point(45, 21);
+            this.fromDateTimePicker.MinDate = new System.DateTime(2010, 5, 6, 0, 0, 0, 0);
             this.fromDateTimePicker.Name = "fromDateTimePicker";
             this.fromDateTimePicker.Size = new System.Drawing.Size(149, 20);
             this.fromDateTimePicker.TabIndex = 4;
+            this.fromDateTimePicker.Value = new System.DateTime(2019, 5, 6, 0, 0, 0, 0);
             // 
             // toDateTimePicker
             // 
@@ -103,7 +105,7 @@ namespace StockToDatabase
             this.toDateTimePicker.Name = "toDateTimePicker";
             this.toDateTimePicker.Size = new System.Drawing.Size(149, 20);
             this.toDateTimePicker.TabIndex = 5;
-            this.toDateTimePicker.Value = new System.DateTime(2010, 5, 16, 0, 0, 0, 0);
+            this.toDateTimePicker.Value = new System.DateTime(2019, 5, 6, 0, 0, 0, 0);
             // 
             // clearDatabaseButton
             // 
@@ -168,22 +170,22 @@ namespace StockToDatabase
             this.scanDatabaseButton.UseVisualStyleBackColor = true;
             this.scanDatabaseButton.Click += new System.EventHandler(this.button4_Click);
             // 
-            // groupBox1
+            // directoryGroupBox
             // 
-            this.groupBox1.Controls.Add(this.folderButton);
-            this.groupBox1.Location = new System.Drawing.Point(159, 240);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(271, 55);
-            this.groupBox1.TabIndex = 12;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "groupBox1";
+            this.directoryGroupBox.Controls.Add(this.folderButton);
+            this.directoryGroupBox.Location = new System.Drawing.Point(159, 240);
+            this.directoryGroupBox.Name = "directoryGroupBox";
+            this.directoryGroupBox.Size = new System.Drawing.Size(271, 55);
+            this.directoryGroupBox.TabIndex = 12;
+            this.directoryGroupBox.TabStop = false;
+            this.directoryGroupBox.Text = "Current Directory";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(654, 453);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.directoryGroupBox);
             this.Controls.Add(this.scanDatabaseButton);
             this.Controls.Add(this.timeIntervalGroupBox);
             this.Controls.Add(this.clearDatabaseButton);
@@ -196,7 +198,7 @@ namespace StockToDatabase
             this.Text = "Form1";
             this.timeIntervalGroupBox.ResumeLayout(false);
             this.timeIntervalGroupBox.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
+            this.directoryGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -216,7 +218,7 @@ namespace StockToDatabase
         private System.Windows.Forms.GroupBox timeIntervalGroupBox;
         private System.Windows.Forms.Button folderButton;
         private System.Windows.Forms.Button scanDatabaseButton;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox directoryGroupBox;
     }
 }
 

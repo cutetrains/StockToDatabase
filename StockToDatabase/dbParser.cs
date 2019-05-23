@@ -35,15 +35,15 @@ namespace StockToDatabase
             try
             {
                 connection.Open();
-                //command = new SqlCommand(sql, connection);
-                //command.ExecuteNonQuery();
-                //command.Dispose();
 
                 command = new SqlCommand(sql, connection);
                 result = command.ExecuteNonQuery();
-
                 Console.WriteLine("Deleted " + result + " records");
-                //reader.Close();
+
+                sql = "DBCC CHECKIDENT('stockTable', RESEED, 0)";
+                command = new SqlCommand(sql, connection);
+                result = command.ExecuteNonQuery();
+
                 command.Dispose();
                 connection.Close();
 
@@ -62,15 +62,13 @@ namespace StockToDatabase
             try
             {
                 connection.Open();
-                //command = new SqlCommand(sql, connection);
-                //command.ExecuteNonQuery();
-                //command.Dispose();
 
                 command = new SqlCommand(sql, connection);
                 reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    Console.WriteLine(reader.GetValue(0) + " - " + reader.GetValue(1) + " - " + reader.GetValue(2));
+                    Console.WriteLine(reader.GetValue(0) + " - " + 
+                        reader.GetValue(1) + " - " + reader.GetValue(2));
                 }
                 reader.Close();
                 command.Dispose();
