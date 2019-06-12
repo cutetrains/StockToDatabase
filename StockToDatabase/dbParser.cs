@@ -28,6 +28,31 @@ namespace StockToDatabase
 
         }
 
+        public bool checkForDate(DateTime stockDate) {
+            sql = "SELECT * FROM StockTable WHERE  RecordDate = '" + stockDate + "';";
+            Console.WriteLine("EXECUTING: " + sql);
+            bool result = true;
+            try
+            {
+                connection.Open();
+
+                command = new SqlCommand(sql, connection);
+                reader = command.ExecuteReader();
+                result = reader.HasRows ? true : false;
+                Console.WriteLine(result);
+                reader.Close();
+                command.Dispose();
+                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Can not open connection ! (WriteSummary)");
+                Console.WriteLine("EXCEPTION: ");
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
+
         public void clearDb() {
             Console.WriteLine("TODO Implement clear database code!");
             Console.WriteLine("TODO Print contents to console");
@@ -56,9 +81,29 @@ namespace StockToDatabase
             }
         }
 
-        public void writeSummareyToConsole() {
+        public int launchSqlCommand(String sql)
+        {
+            try
+            {
+                connection.Open();
+                command = new SqlCommand(sql, connection);
+                command.ExecuteNonQuery();
+                command.Dispose();
+                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Can not open connection ! ");
+                Console.WriteLine("EXCEPTION: ");
+                Console.WriteLine(ex);
+            }
+            return 0;
+        }
+
+
+    public void writeSummareyToConsole() {
             Console.WriteLine("TODO Print contents to console");
-            sql = "SELECT * FROM StockTable;"; ;
+            sql = "SELECT * FROM StockTable;";
             try
             {
                 connection.Open();

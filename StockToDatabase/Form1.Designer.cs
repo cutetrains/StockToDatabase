@@ -30,7 +30,6 @@ namespace StockToDatabase
         {
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.debugInstructionsLabel = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.helloWorldLabel = new System.Windows.Forms.Label();
             this.fromDateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.toDateTimePicker = new System.Windows.Forms.DateTimePicker();
@@ -66,17 +65,6 @@ namespace StockToDatabase
             this.debugInstructionsLabel.Size = new System.Drawing.Size(355, 13);
             this.debugInstructionsLabel.TabIndex = 1;
             this.debugInstructionsLabel.Text = "Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app!";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(207, 84);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(97, 28);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Click Me!";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // helloWorldLabel
             // 
@@ -190,7 +178,6 @@ namespace StockToDatabase
             this.Controls.Add(this.timeIntervalGroupBox);
             this.Controls.Add(this.clearDatabaseButton);
             this.Controls.Add(this.helloWorldLabel);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.debugInstructionsLabel);
             this.Controls.Add(this.linkLabel1);
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -208,7 +195,6 @@ namespace StockToDatabase
 
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label debugInstructionsLabel;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label helloWorldLabel;
         private System.Windows.Forms.DateTimePicker fromDateTimePicker;
         private System.Windows.Forms.DateTimePicker toDateTimePicker;

@@ -16,6 +16,17 @@ using System.Windows.Forms;
 
 namespace StockToDatabase
 {
+    static class Counters
+    {
+        public static int fileCounter = 0;
+        public static int stockRecordCounter = 0;
+
+        public static int unknownCounter = 0;
+        public static int type1Counter = 0;
+        public static int type2Counter = 0;
+        public static int type3Counter = 0;
+    }
+
     public partial class Form1 : Form
     {
 
@@ -46,58 +57,6 @@ namespace StockToDatabase
             // Click on the link below to continue learning how to build a desktop app using WinForms!
             System.Diagnostics.Process.Start("http://aka.ms/dotnet-get-started-desktop");
 
-        }
-
-        /*
-         TODO: DELETE CODE BELOW!
-            */
-        private void button1_Click(object sender, EventArgs e)
-        {
-            
-            string connetionString = null;
-            SqlConnection connection;
-            SqlCommand command;
-            SqlDataReader reader;
-            string sql = null;
-            
-            connetionString = "Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = C:\\Users\\gusta"+
-                "\\source\\repos\\StockToDatabase\\StockToDatabase\\StockRecordDb.mdf; Integrated Security = True";
-            Console.WriteLine(connetionString);
-            sql = "INSERT INTO StockTable(RecordDate, StockName, Price, EarningPerShare, PricePerEarning, CapitalPerShare," + 
-                  " PricePerCapital, Dividend, Yield, ProfitMargin, ROI)"+ 
-                  " VALUES('1970-01-01', 'GodFather', 10.0, 7, 8, 9, 10, 11, 12, 13, 14);";
-            connection = new SqlConnection(connetionString);
-
-            Console.WriteLine("Try to connect to database...");
-
-            try
-            {
-                connection.Open();
-                command = new SqlCommand(sql, connection);
-                command.ExecuteNonQuery();
-                command.Dispose();
-                
-                sql = "SELECT * FROM StockTable;";
-                command = new SqlCommand(sql, connection);
-                reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    MessageBox.Show(reader.GetValue(0) + " - " + reader.GetValue(1) + " - " + reader.GetValue(2));
-                }
-                reader.Close();
-                command.Dispose();
-                
-                MessageBox.Show(" ExecuteNonQuery in SqlCommand executed !!");
-                connection.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Can not open connection ! ");
-                Console.WriteLine("EXCEPTION: ");
-                Console.WriteLine(ex);
-            }
-
-            Console.WriteLine("All done. Press any key to finish...");
         }
 
         private void button2_Click(object sender, EventArgs e)
