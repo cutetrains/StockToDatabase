@@ -102,7 +102,6 @@ namespace StockToDatabase
 
 
     public void writeSummareyToConsole() {
-            Console.WriteLine("TODO Print contents to console");
             sql = "SELECT * FROM StockTable;";
             try
             {

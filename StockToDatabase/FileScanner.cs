@@ -28,8 +28,6 @@ namespace StockToDatabase
             int totalNbrOfStocks = 0;
 
             //CALL METHOD FOR ANALYZING THE FILE
-            
-
             foreach (string f in filePaths) {
                 // Is this a csv file?
                 if(Path.GetExtension(f).Equals(".csv"))
@@ -129,6 +127,7 @@ namespace StockToDatabase
             // DB means that this will go into the database
             string name = "";            //                     DB
             Nullable<float> P = null;    // Price per share     DB
+            Nullable<bool> priceMissingInRecord = null;
             Nullable<float> E = null;    // Earning per share  
             Nullable<float> PE = null;   // Price per earning P/E  DB
             Nullable<float> C = null;    // Capital per share        
@@ -146,7 +145,7 @@ namespace StockToDatabase
                 /*      0    1    2    3              4    5                 6         7                 8               */
                 case "Namn;Namn;Kurs;Vinst per aktie;P E;Kapital per aktie;P JEK;Direktavkastning;Utdelning per aktie;" +
                 "Vinstmarginal;RSI;Nasta rapport;Utdelningsdatum;TA":
-                    /*     9       10      11           12           13  */
+                /*     9       10      11           12           13  */
                     Console.WriteLine("-----------\n" + fileHeader + "\n???????\nNamn;Namn;Kurs;Vinst per aktie;P E;Kapital per aktie;P JEK;Direktavkastning;Utdelning per aktie;" +
                 "Vinstmarginal;RSI;Nasta rapport;Utdelningsdatum;TA\n----------");
                     Counters.type1Counter++;
@@ -162,6 +161,9 @@ namespace StockToDatabase
                     E = string2Float(recordElements[3]);
                     PE = string2Float(recordElements[4]);
                     Console.WriteLine($"Checking results: '{P}'/'{E}'='{PE}', is that '{P/E}'?");
+                    checkPrice();
+                    Console.WriteLine($"Checking results: '{P}'/'{E}'='{PE}', is that '{P / E}'?");
+
                     if (Math.Abs(Convert.ToDouble(P/E)) < epsilon) {
                         Console.WriteLine("Error, mismatch! ");
                     }
@@ -174,40 +176,54 @@ namespace StockToDatabase
                     Console.WriteLine($"Checking results: '{D}'/'{P}'='{DP}', is that '{D / P}'?");
                     Pm = string2Float(recordElements[9]);
                     int i = 0;
-                    Console.WriteLine("---" + recordElements[10] + "---");
-                    if (recordElements[10] == "tbd")
+                    //Console.WriteLine("---" + recordElements[10] + "---");
+                    if (recordElements[10].Equals("tbd"))
                     {
+                        Console.WriteLine("TBD detected");
                         RSI = -1;// -1 indicates that this value is null
                     }
                     else {
                         RSI = string2Float(recordElements[10]);
                     }
-                    nextReport = recordElements[11];
-                    nextDividend = recordElements[12];
-                    //TODO CHECK LENGTH OF recordEleents before doing this
-                    if (recordElements.Count == 14)
+                    Console.WriteLine("Length: " + recordElements.Count);
+                    if (recordElements.Count == 13)
                     {
-                        if (Int32.TryParse(recordElements[10], out i))
+                        Console.WriteLine("Dates seem to be missing?");
+                        if (Int32.TryParse(recordElements[12], out i))
                         {
                             TA = i;
                         }
+
                     }
                     else
                     {
-                        Console.WriteLine("TA not detected");
+                        nextReport = recordElements[11];
+                        nextDividend = recordElements[12];
+                        //TODO CHECK LENGTH OF recordEleents before doing this
+                        if (recordElements.Count == 14)
+                        {
+                            if (Int32.TryParse(recordElements[13], out i))
+                            {
+                                TA = i;
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("TA not detected");
+                        }
                     }
-
                     sql = "INSERT INTO StockTable(RecordDate, StockName, Price, PricePerEarning," +
-                  " PricePerCapital, Yield, ProfitMargin, RSI, DividendDate, ReportDate) VALUES('" +
+                  " PricePerCapital, Yield, ProfitMargin, RSI, DividendDate, ReportDate, PriceMissing) VALUES('" +
                     fileDate + "', '" + name + "', " + P.ToString().Replace(",",".") + ", " + 
                     PE.ToString().Replace(",", ".") + ", " + PC.ToString().Replace(",", ".") + ", " + 
                     DP.ToString().Replace(",", ".") + ", " + Pm.ToString().Replace(",", ".") + ", " + 
-                    RSI.ToString().Replace(",", ".") + ", '" + nextDividend + "', '" + nextReport + "');";
+                    RSI.ToString().Replace(",", ".") + ", '" + nextDividend + "', '" + nextReport + "', '" + 
+                    (priceMissingInRecord == true? 1:0) + "');";
                     Console.WriteLine("INSERT INTO StockTable(RecordDate, StockName, Price, PricePerEarning," +
                   " PricePerCapital, Yield, ProfitMargin, RSI, DividendDate, ReportDate) VALUES('1970-01-01', 'GodFather', 10.0, 7, 8, 9, 10, 11, 12, 13, 14);");
                     Console.WriteLine(sql);
                     db.launchSqlCommand(sql);
-                    db.writeSummareyToConsole();
+                    //db.writeSummareyToConsole();
                     identified = true;//DELETE
                     //PE = recordElements[3];
                     break;
@@ -242,6 +258,21 @@ namespace StockToDatabase
             }
             else {
                 return 0;
+            }
+
+            void checkPrice() {
+                if (P == null) {
+                    priceMissingInRecord = true;
+                    Console.WriteLine("P is null!");
+                    if (PE != null && E != null) {
+                        P = PE * E;
+                        Console.WriteLine(" P: " + P +" = " + PE + " + " + E);
+                    } else {
+                        Console.WriteLine("ERROR! DATA IS NOT RECOVERABLE!");
+                    }
+                } else {
+                    priceMissingInRecord = false;
+                }
             }
         }
 
