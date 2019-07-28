@@ -20,8 +20,6 @@ namespace StockToDatabase
         int result = 0;
 
         public DbParser() {
-            Console.WriteLine("Created instance of dbParser!");
-
             connectionString = "Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = C:\\Users\\gusta" +
                 "\\source\\repos\\StockToDatabase\\StockToDatabase\\StockRecordDb.mdf; Integrated Security = True";
             connection =  new SqlConnection(connectionString);
@@ -30,7 +28,7 @@ namespace StockToDatabase
 
         public bool checkForDate(DateTime stockDate) {
             sql = "SELECT * FROM StockTable WHERE  RecordDate = '" + stockDate + "';";
-            Console.WriteLine("EXECUTING: " + sql);
+            //Console.WriteLine("EXECUTING: " + sql);
             bool result = true;
             try
             {
@@ -39,7 +37,7 @@ namespace StockToDatabase
                 command = new SqlCommand(sql, connection);
                 reader = command.ExecuteReader();
                 result = reader.HasRows ? true : false;
-                Console.WriteLine(result);
+                //Console.WriteLine(result);
                 reader.Close();
                 command.Dispose();
                 connection.Close();
@@ -94,7 +92,7 @@ namespace StockToDatabase
             catch (Exception ex)
             {
                 MessageBox.Show("Can not open connection ! ");
-                Console.WriteLine("EXCEPTION: ");
+                Console.WriteLine("EXCEPTION FOR : "+ sql);
                 Console.WriteLine(ex);
             }
             return 0;

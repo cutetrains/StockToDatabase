@@ -25,6 +25,8 @@ namespace StockToDatabase
         public static int type1Counter = 0;
         public static int type2Counter = 0;
         public static int type3Counter = 0;
+        public static int errorCounter = 0;
+
     }
 
     public partial class Form1 : Form
