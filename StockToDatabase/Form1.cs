@@ -16,18 +16,7 @@ using System.Windows.Forms;
 
 namespace StockToDatabase
 {
-    static class Counters
-    {
-        public static int fileCounter = 0;
-        public static int stockRecordCounter = 0;
 
-        public static int unknownCounter = 0;
-        public static int type1Counter = 0;
-        public static int type2Counter = 0;
-        public static int type3Counter = 0;
-        public static int errorCounter = 0;
-
-    }
 
     public partial class Form1 : Form
     {
@@ -38,7 +27,7 @@ namespace StockToDatabase
 
         // Bad design, the inputPath and the text in the folderButton are redundant.
         private String inputPath = @"C:\Users\gusta\Dropbox\Ekonomi\results";
-                
+
         public Form1()
         {
             InitializeComponent();
@@ -92,5 +81,32 @@ namespace StockToDatabase
                 folderButton.Text = inputPath;
             }
         }
+
+        private void toDateTimePicker_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void helloWorldLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void addToXmlProposalTextBox(string s){
+            xmlProposalTexBox.AppendText(s + "\n");
+        }
+    }
+
+    static class Counters
+    {
+        public static int fileCounter = 0;
+        public static int stockRecordCounter = 0;
+
+        public static int unknownCounter = 0;
+        public static int type1Counter = 0;
+        public static int type2Counter = 0;
+        public static int type3Counter = 0;
+        public static int errorCounter = 0;
+
     }
 }

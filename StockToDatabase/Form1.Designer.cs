@@ -6,7 +6,7 @@ namespace StockToDatabase
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-
+        
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -29,7 +29,6 @@ namespace StockToDatabase
         private void InitializeComponent()
         {
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.debugInstructionsLabel = new System.Windows.Forms.Label();
             this.helloWorldLabel = new System.Windows.Forms.Label();
             this.fromDateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.toDateTimePicker = new System.Windows.Forms.DateTimePicker();
@@ -40,6 +39,7 @@ namespace StockToDatabase
             this.folderButton = new System.Windows.Forms.Button();
             this.scanDatabaseButton = new System.Windows.Forms.Button();
             this.directoryGroupBox = new System.Windows.Forms.GroupBox();
+            this.xmlProposalTexBox = new System.Windows.Forms.TextBox();
             this.timeIntervalGroupBox.SuspendLayout();
             this.directoryGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -56,16 +56,6 @@ namespace StockToDatabase
             this.linkLabel1.Text = "Click here for information about StockReader and StockAnalyzer!";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
-            // debugInstructionsLabel
-            // 
-            this.debugInstructionsLabel.AutoSize = true;
-            this.debugInstructionsLabel.Location = new System.Drawing.Point(94, 58);
-            this.debugInstructionsLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.debugInstructionsLabel.Name = "debugInstructionsLabel";
-            this.debugInstructionsLabel.Size = new System.Drawing.Size(355, 13);
-            this.debugInstructionsLabel.TabIndex = 1;
-            this.debugInstructionsLabel.Text = "Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app!";
-            // 
             // helloWorldLabel
             // 
             this.helloWorldLabel.AutoSize = true;
@@ -73,9 +63,10 @@ namespace StockToDatabase
             this.helloWorldLabel.Location = new System.Drawing.Point(202, 19);
             this.helloWorldLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.helloWorldLabel.Name = "helloWorldLabel";
-            this.helloWorldLabel.Size = new System.Drawing.Size(131, 26);
+            this.helloWorldLabel.Size = new System.Drawing.Size(184, 26);
             this.helloWorldLabel.TabIndex = 3;
-            this.helloWorldLabel.Text = "Hello World!";
+            this.helloWorldLabel.Text = "StockToDatabase";
+            this.helloWorldLabel.Click += new System.EventHandler(this.helloWorldLabel_Click);
             // 
             // fromDateTimePicker
             // 
@@ -84,20 +75,21 @@ namespace StockToDatabase
             this.fromDateTimePicker.Name = "fromDateTimePicker";
             this.fromDateTimePicker.Size = new System.Drawing.Size(149, 20);
             this.fromDateTimePicker.TabIndex = 4;
-            this.fromDateTimePicker.Value = new System.DateTime(2019, 5, 6, 0, 0, 0, 0);
+            this.fromDateTimePicker.Value = new System.DateTime(2013, 7, 28, 0, 0, 0, 0);
             // 
             // toDateTimePicker
             // 
             this.toDateTimePicker.Location = new System.Drawing.Point(45, 59);
-            this.toDateTimePicker.MinDate = new System.DateTime(2010, 5, 16, 0, 0, 0, 0);
+            this.toDateTimePicker.MinDate = new System.DateTime(2010, 5, 6, 0, 0, 0, 0);
             this.toDateTimePicker.Name = "toDateTimePicker";
             this.toDateTimePicker.Size = new System.Drawing.Size(149, 20);
             this.toDateTimePicker.TabIndex = 5;
-            this.toDateTimePicker.Value = new System.DateTime(2019, 5, 6, 0, 0, 0, 0);
+            this.toDateTimePicker.Value = new System.DateTime(2013, 7, 28, 0, 0, 0, 0);
+            this.toDateTimePicker.ValueChanged += new System.EventHandler(this.toDateTimePicker_ValueChanged);
             // 
             // clearDatabaseButton
             // 
-            this.clearDatabaseButton.Location = new System.Drawing.Point(159, 305);
+            this.clearDatabaseButton.Location = new System.Drawing.Point(12, 275);
             this.clearDatabaseButton.Name = "clearDatabaseButton";
             this.clearDatabaseButton.Size = new System.Drawing.Size(91, 28);
             this.clearDatabaseButton.TabIndex = 6;
@@ -131,7 +123,7 @@ namespace StockToDatabase
             this.timeIntervalGroupBox.Controls.Add(this.toLabel);
             this.timeIntervalGroupBox.Controls.Add(this.fromDateTimePicker);
             this.timeIntervalGroupBox.Controls.Add(this.toDateTimePicker);
-            this.timeIntervalGroupBox.Location = new System.Drawing.Point(159, 139);
+            this.timeIntervalGroupBox.Location = new System.Drawing.Point(12, 109);
             this.timeIntervalGroupBox.Name = "timeIntervalGroupBox";
             this.timeIntervalGroupBox.Size = new System.Drawing.Size(271, 94);
             this.timeIntervalGroupBox.TabIndex = 9;
@@ -150,7 +142,7 @@ namespace StockToDatabase
             // 
             // scanDatabaseButton
             // 
-            this.scanDatabaseButton.Location = new System.Drawing.Point(256, 305);
+            this.scanDatabaseButton.Location = new System.Drawing.Point(109, 275);
             this.scanDatabaseButton.Name = "scanDatabaseButton";
             this.scanDatabaseButton.Size = new System.Drawing.Size(113, 28);
             this.scanDatabaseButton.TabIndex = 11;
@@ -161,24 +153,32 @@ namespace StockToDatabase
             // directoryGroupBox
             // 
             this.directoryGroupBox.Controls.Add(this.folderButton);
-            this.directoryGroupBox.Location = new System.Drawing.Point(159, 240);
+            this.directoryGroupBox.Location = new System.Drawing.Point(12, 210);
             this.directoryGroupBox.Name = "directoryGroupBox";
             this.directoryGroupBox.Size = new System.Drawing.Size(271, 55);
             this.directoryGroupBox.TabIndex = 12;
             this.directoryGroupBox.TabStop = false;
             this.directoryGroupBox.Text = "Current Directory";
             // 
+            // xmlProposalTexBox
+            // 
+            this.xmlProposalTexBox.Location = new System.Drawing.Point(316, 103);
+            this.xmlProposalTexBox.Multiline = true;
+            this.xmlProposalTexBox.Name = "xmlProposalTexBox";
+            this.xmlProposalTexBox.Size = new System.Drawing.Size(281, 259);
+            this.xmlProposalTexBox.TabIndex = 13;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(654, 453);
+            this.Controls.Add(this.xmlProposalTexBox);
             this.Controls.Add(this.directoryGroupBox);
             this.Controls.Add(this.scanDatabaseButton);
             this.Controls.Add(this.timeIntervalGroupBox);
             this.Controls.Add(this.clearDatabaseButton);
             this.Controls.Add(this.helloWorldLabel);
-            this.Controls.Add(this.debugInstructionsLabel);
             this.Controls.Add(this.linkLabel1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
@@ -194,7 +194,6 @@ namespace StockToDatabase
         #endregion
 
         private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.Label debugInstructionsLabel;
         private System.Windows.Forms.Label helloWorldLabel;
         private System.Windows.Forms.DateTimePicker fromDateTimePicker;
         private System.Windows.Forms.DateTimePicker toDateTimePicker;
@@ -205,6 +204,7 @@ namespace StockToDatabase
         private System.Windows.Forms.Button folderButton;
         private System.Windows.Forms.Button scanDatabaseButton;
         private System.Windows.Forms.GroupBox directoryGroupBox;
+        private System.Windows.Forms.TextBox xmlProposalTexBox;
     }
 }
 

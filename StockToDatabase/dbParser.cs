@@ -23,6 +23,32 @@ namespace StockToDatabase
             connectionString = "Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = C:\\Users\\gusta" +
                 "\\source\\repos\\StockToDatabase\\StockToDatabase\\StockRecordDb.mdf; Integrated Security = True";
             connection =  new SqlConnection(connectionString);
+            Console.WriteLine("Initiated DbParser");
+        }
+
+        public bool checkStockDate(DateTime stockDate, String stockName) {
+            sql = "SELECT * FROM StockTable WHERE  RecordDate = '" + stockDate + "' AND StockName = '" + stockName + "';";
+            //Console.WriteLine("EXECUTING: " + sql);
+            bool result = true;
+            try
+            {
+                connection.Open();
+
+                command = new SqlCommand(sql, connection);
+                reader = command.ExecuteReader();
+                result = reader.HasRows ? true : false;
+                //Console.WriteLine(result);
+                reader.Close();
+                command.Dispose();
+                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Can not open connection ! (WriteSummary)");
+                Console.WriteLine("EXCEPTION: ");
+                Console.WriteLine(ex);
+            }
+            return result;
 
         }
 
@@ -124,9 +150,5 @@ namespace StockToDatabase
             }
         }
 
-        public void scanStocksToDb()
-        {
-            Console.WriteLine("TODO Implement code for scanning stocks!");
-        }
     }
 }

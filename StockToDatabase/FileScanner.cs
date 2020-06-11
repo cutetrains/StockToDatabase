@@ -15,9 +15,16 @@ namespace StockToDatabase
         List <string>  fileHeaderFormat = new List<string> { };
         List <string> stockNames = new List<string> { };
         DbParser db = new DbParser();
+        NameChecker nc = new NameChecker();
+
+        Form1 form1;
+        
         public FileScanner()
         {
             Console.WriteLine("Created instance of FileScanner!");
+            //nc.showStatus();
+            //nc.findNode("ABB");
+            nc.importDictionaries();
         }
 
         public void scanFolderForValidFiles(String folder, DateTime startDate, DateTime endDate) {
@@ -65,6 +72,7 @@ namespace StockToDatabase
             Console.WriteLine("Type 2:  " + Counters.type2Counter);
             Console.WriteLine("Type 3:  " + Counters.type3Counter);
             Console.WriteLine("Errors detected:  " + Counters.errorCounter);
+            nc.showUnknownCombinations();
         }
         
         /*
@@ -75,7 +83,7 @@ namespace StockToDatabase
             int response = 0;
             String line;
             String fileHeader = "";
-            int numOfLines = 150;
+            int numOfLines = 500;
 
             // Read the file and display it line by line.  
             TextReader tr = new StreamReader(fileName, Encoding.GetEncoding(1252), true);
@@ -108,13 +116,15 @@ namespace StockToDatabase
         public Nullable<float> string2Float(String s)
         {
             Nullable<float> value = null;
-            try //TODO: Make this a separate function with index and expected variable
-            {
-                value = Convert.ToSingle(s.Replace(".", ","));
-            }
-            catch (FormatException)
-            {
-                //Console.WriteLine($"Unable to parse '{s}'");
+            if (s != "") {
+                try //TODO: Make this a separate function with index and expected variable
+                {
+                    value = Convert.ToSingle(s.Replace(".", ","));
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine($"Unable to parse '{s}'");
+                }
             }
             return value;
         }
@@ -123,13 +133,16 @@ namespace StockToDatabase
         {
             string[] formats = {"yyyy-MM-dd", "yyyy-M-dd", "yyyy-MM-d", "yyyy-M-d"};
             DateTime dateValue;
+            DateTime fileDateValue;
             Boolean identified = false ;
             Boolean errorFound = false;
+            Boolean nameStatus = true;
             //Console.WriteLine(fileHeader + "\nAnalyzing line: \n " + record + "   " + fileDate);
             string sql = null;
             List<string> recordElements;
             float epsilon = 0.1F; // Error tolearance 
             // DB means that this will go into the database
+            string expectedName = "";
             string name = "";            //                     DB
             Nullable<float> P = null;    // Price per share     DB
             Nullable<bool> priceMissingInRecord = null;
@@ -145,13 +158,19 @@ namespace StockToDatabase
             String nextDividend = "";    //                     DB
             Nullable<int> TA = null;     //                     DB
             Counters.stockRecordCounter++;
+            DateTime.TryParseExact(fileDate, formats,
+                                  new CultureInfo("en-US"),
+                                  DateTimeStyles.None,
+                                  out fileDateValue);
             //For simplicity, use a switch case for different headers.
             switch (fileHeader) {
                 /*      0    1    2    3              4    5                 6         7                 8               */
                 case "Namn;Namn;Kurs;Vinst per aktie;P E;Kapital per aktie;P JEK;Direktavkastning;Utdelning per aktie;" +
                    "Vinstmarginal;RSI;Nasta rapport;Utdelningsdatum;TA":
+                case "Namn;Namn;Kurs;Vinst per aktie;P E;Kapital per aktie;P JEK;Direktavkastning;Utdelning per aktie;" +
+                   "Vinstmarginal;RSI;Nasta rapport;Utdelningsdatum;TA;":
                     /*     9       10      11           12           13  */
-                    
+
                     //Console.WriteLine("-----------\n" + fileHeader + "\n???????\nNamn;Namn;Kurs;Vinst per aktie;P E;Kapital per aktie;P JEK;Direktavkastning;Utdelning per aktie;" +
                     //"Vinstmarginal;RSI;Nasta rapport;Utdelningsdatum;TA\n----------");
                     Counters.type1Counter++;
@@ -160,16 +179,20 @@ namespace StockToDatabase
                     recordElements = record.Split(';').ToList<string>();
                     if (recordElements.Count < 11)
                     {
-                        Console.WriteLine("ERROR! Less than 13 elements");
+                        //Console.WriteLine("ERROR! Less than 13 elements");
                         errorFound = true;
                     }
                     else if (recordElements[0].Equals("---Void---"))
                     {
-                        Console.WriteLine("Ignoring ---Void---");
+                        //Console.WriteLine("Ignoring ---Void---");
                         errorFound = true;
                     }
-                    else { 
+                    else {
+                        expectedName = recordElements[0];
                         name = recordElements[1];
+                        //Check whether name is in white list, unknown or in black list:
+                        //Console.WriteLine(expectedName + " - > " + name);
+                        nameStatus = (1 == nc.findStockName(expectedName, name));
                         //Console.Write(" " + name + " ");
                         if (!recordElements[0].Equals(recordElements[1]))
                         {
@@ -319,8 +342,13 @@ namespace StockToDatabase
                             }
                         }
                         //Console.WriteLine("Error found: " + errorFound);
-                        if (errorFound == false)
+                        if (errorFound == false && 
+                            nameStatus == true &&
+                            !db.checkStockDate(fileDateValue, name)
+                            )
                         {
+                            //Console.WriteLine("Checkking name " + name + " for date " + fileDate + ": " + db.checkStockDate(fileDateValue, name));
+                            //"TODO AVOID ADDING DUPLICATE ENTRIES!";
                             sql = "INSERT INTO StockTable(RecordDate, StockName, Price, PricePerEarning," +
                           " PricePerCapital, Yield, ProfitMargin, RSI, DividendDate, ReportDate, PriceMissing) VALUES('" +
                             fileDate + "', '" +
@@ -344,7 +372,7 @@ namespace StockToDatabase
                         }
                         else
                         {
-                            Console.WriteLine("\nSkipping record for " + name + " on " + fileDate);
+                            //Console.WriteLine("\nSkipping record for " + name + " on " + fileDate);
                         }
                         //db.writeSummareyToConsole();
                         identified = true;//DELETE
